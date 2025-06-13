@@ -21,14 +21,6 @@ A modern web application that generates interactive flashcards from educational 
 - **Responsive UI:**
   - Works beautifully on desktop and mobile.
 
-## Demo PDF
-
-A sample PDF file is included in this repository for testing:
-
-- `APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf`
-
-You can upload this PDF in the app to test flashcard generation and question search.
-
 ## Setup
 
 1. **Clone the repository:**
@@ -65,31 +57,61 @@ You can upload this PDF in the app to test flashcard generation and question sea
 4. **Search for answers** to your own questions from the content.
 5. **Export** your flashcards in your desired format.
 
-## How to Upload to GitHub
+## Sample Execution
 
-1. **Initialize a git repository (if not already):**
-   ```bash
-   git init
-   ```
-2. **Add all files:**
-   ```bash
-   git add .
-   ```
-3. **Commit your changes:**
-   ```bash
-   git commit -m "Initial commit: LLM-powered flashcard generator with Gemini, translation, and question search"
-   ```
-4. **Create a new repository on GitHub** and follow the instructions to push your local repo to GitHub:
-   ```bash
-   git remote add origin <your-github-repo-url>
-   git branch -M main
-   git push -u origin main
-   ```
+This section demonstrates a typical workflow using the provided sample PDF: `APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf`.
 
-## Contributing
+**1. Generating Flashcards from PDF Content:**
 
-Contributions are welcome! Please open an issue or submit a pull request for improvements or new features.
+Upon uploading the PDF and clicking 'Generate Flashcards', the application processes the content and displays a set of flashcards. Due to the structure detection, flashcards are grouped by their respective sections (e.g., 'Introduction', 'Concepts', 'Algorithms').
 
-## License
+*Example Flashcard (Front - Question):*
+```
+Card 1 - Binary Search Algorithm
+What is Binary Search?
+Click to reveal answer
+```
 
-MIT License 
+*Example Flashcard (Back - Answer):*
+```
+Answer - Binary Search Algorithm
+An efficient algorithm for finding an item from a sorted list of elements by repeatedly dividing the search interval in half.
+Click to see question
+```
+
+**2. Translating Flashcards:**
+
+After generation, you can select a language (e.g., Hindi) from the dropdown and click 'Translate'. The flashcards will be instantly translated.
+
+*Example Translated Flashcard (Hindi):*
+```
+कार्ड 1 - बाइनरी सर्च एल्गोरिथम
+बाइनरी सर्च क्या है?
+उत्तर प्रकट करने के लिए क्लिक करें
+```
+
+**3. Searching for an Answer:**
+
+You can also search for specific answers within the content. For instance, if you type "What is the key requirement for Binary Search?" into the search bar, you would get an answer directly from the content.
+
+*Example Search Result:* 
+```
+Answer
+The input list or array must be sorted.
+```
+
+## Screenshots
+
+*(Add your screenshots here to visually demonstrate the features)* 
+
+### 1. Search for an Answer with Error
+
+![Search for an Answer with Error](Screenshot%202025-06-13%20155408.png)
+
+### 2. Search Result and Flashcard Example
+
+![Search Result and Flashcard Example](Screenshot%202025-06-13%20155343.png)
+
+### 3. Flashcard View
+
+![Flashcard View](Screenshot%202025-06-13%20155238.png) 

@@ -7,6 +7,7 @@ import nltk
 import json
 import re
 import requests
+import PyPDF2
 
 # Load environment variables
 load_dotenv()
@@ -14,6 +15,7 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__, static_url_path='')
 CORS(app)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16 MB limit for uploads
 
 # Download required NLTK data
 nltk.download('punkt')
@@ -33,10 +35,23 @@ def serve_index():
 @app.route('/api/generate', methods=['POST'])
 def generate_flashcards():
     try:
-        data = request.json
-        content = data.get('content')
-        subject = data.get('subject')
-        # model_type = data.get('modelType')  # No longer needed
+        # Check if a file was uploaded
+        if 'file' in request.files:
+            uploaded_file = request.files['file']
+            if uploaded_file.filename == '':
+                return jsonify({'error': 'No selected file'}), 400
+            if uploaded_file and uploaded_file.filename.endswith('.pdf'):
+                content = extract_text_from_pdf(uploaded_file.stream)
+            elif uploaded_file and uploaded_file.filename.endswith('.txt'):
+                content = uploaded_file.stream.read().decode('utf-8')
+            else:
+                return jsonify({'error': 'Unsupported file type. Only PDF and TXT are supported.'}), 400
+        else:
+            # If no file, expect content directly in JSON
+            data = request.json
+            content = data.get('content')
+
+        subject = request.form.get('subject') if 'file' in request.files else data.get('subject')
 
         if not content:
             return jsonify({'error': 'No content provided'}), 400
@@ -44,13 +59,28 @@ def generate_flashcards():
         if not GOOGLE_API_KEY:
             return jsonify({'error': 'Google API key not configured in environment'}), 500
         
-        # Only allow Gemini
-        flashcards = generate_with_gemini(content, subject)
-        return jsonify(flashcards)
+        try:
+            flashcards = generate_with_gemini(content, subject)
+            return jsonify({'flashcards': flashcards, 'content': content})
+        except Exception as e:
+            error_message = str(e)
+            print("Error in generate_with_gemini:", error_message)  # Debug print
+            return jsonify({'error': f'Failed to generate flashcards: {error_message}'}), 500
 
     except Exception as e:
-        print("Error in generate_flashcards:", str(e))  # Debug print
-        return jsonify({'error': str(e)}), 500
+        error_message = str(e)
+        print("Error in generate_flashcards:", error_message)  # Debug print
+        return jsonify({'error': f'Server error: {error_message}'}), 500
+
+def extract_text_from_pdf(pdf_file):
+    try:
+        reader = PyPDF2.PdfReader(pdf_file)
+        text = ""
+        for page_num in range(len(reader.pages)):
+            text += reader.pages[page_num].extract_text() or ""
+        return text
+    except Exception as e:
+        raise Exception(f"Failed to extract text from PDF: {str(e)}")
 
 def generate_with_gemini(content, subject):
     # Detect structure: find subheadings/chapters (lines starting with #, ##, or similar)
@@ -123,8 +153,7 @@ Return format (JSON array only):
         response_text = response.text.strip()
         print("Raw Gemini response:", response_text)  # Debug print
         
-        # Clean the response text to ensure it's valid JSON
-        # Remove markdown code block markers and any other non-JSON text
+        # Clean the response text to remove markdown code block markers
         response_text = response_text.replace('```json', '').replace('```', '')
         response_text = response_text.strip()
         
@@ -136,15 +165,30 @@ Return format (JSON array only):
             raise Exception("No valid JSON array found in response")
             
         json_str = response_text[start_idx:end_idx]
-        print("Cleaned JSON string:", json_str)  # Debug print
+        
+        # Clean up the JSON string
+        json_str = json_str.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
+        json_str = re.sub(r'\s+', ' ', json_str)  # Replace multiple spaces with single space
+        
+        # Remove any potential BOM or special characters at the start
+        json_str = json_str.lstrip('\ufeff').lstrip()
+        
+        print("Cleaned JSON string (before final parse):", json_str)  # Debug print
         
         try:
-            flashcards = json.loads(json_str)
+            # First try to parse as is
+            try:
+                flashcards = json.loads(json_str)
+            except json.JSONDecodeError:
+                # If that fails, try to clean it further
+                json_str = json_str.replace('\\n', ' ').replace('\\r', ' ').replace('\\t', ' ')
+                json_str = re.sub(r'\\+', '\\', json_str)  # Fix any double escapes
+                flashcards = json.loads(json_str)
             
             # Validate the structure of each flashcard
             for card in flashcards:
                 if not all(key in card for key in ['question', 'answer', 'difficulty', 'topic']):
-                    raise Exception("Invalid flashcard structure")
+                    raise Exception("Invalid flashcard structure - missing required fields")
                 if card['difficulty'] not in ['Easy', 'Medium', 'Hard']:
                     card['difficulty'] = 'Medium'  # Default to Medium if invalid
                 # If section is required but missing, fill with 'General' or 'Unknown'
@@ -189,15 +233,42 @@ def search_answer():
         data = request.json
         content = data.get('content')
         question = data.get('question')
-        if not content or not question:
-            return jsonify({'error': 'Missing content or question'}), 400
+        flashcards = data.get('flashcards', []) # Get flashcards, default to empty list if not present
+        
+        print("Search Answer received content length:", len(content) if content else 0) # Debug print
+        print("Search Answer received question:", question) # Debug print
+        print("Search Answer received flashcards count:", len(flashcards)) # Debug print
+
+        if not content and not flashcards: # Modified check for content or flashcards
+            return jsonify({'error': 'Missing content or flashcards to search in'}), 400
+        if not question:
+            return jsonify({'error': 'Missing question'}), 400
+
+        # 1. Try to find answer directly in generated flashcards
+        question_lower = question.lower()
+        for card in flashcards:
+            if question_lower in card.get('question', '').lower():
+                return jsonify({'answer': card.get('answer', '')})
+            if question_lower in card.get('answer', '').lower():
+                return jsonify({'answer': card.get('answer', '')})
+
+        # 2. If not found in flashcards, use Gemini model with original content
+        if not content:
+            return jsonify({'error': 'Sorry, the answer is not present in the provided content.'}), 200 # Or indicate no content for general search
+
         prompt = f"""
-You are an expert assistant. Given the following content, answer the user's question as accurately as possible using ONLY the information from the content. If the answer is not present in the content, reply: 'Sorry, the answer is not present in the provided content.'
+As an advanced AI assistant, your task is to precisely extract and provide the answer to the user's question SOLELY based on the following content.
+
+Instructions:
+1. If the answer is explicitly found in the content, provide it directly without any additional commentary or introductory phrases.
+2. If the answer is NOT present in the content, respond with: "Sorry, the answer is not present in the provided content."
+3. Do not invent information or use external knowledge.
 
 Content:
 {content}
 
 Question: {question}
+
 Answer:
 """
         model = genai.GenerativeModel('gemini-1.5-flash')
@@ -214,6 +285,7 @@ Answer:
         answer = response.text.strip()
         return jsonify({'answer': answer})
     except Exception as e:
+        print("Error in search_answer:", str(e)) # Debug print
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
