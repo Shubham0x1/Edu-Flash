@@ -31,7 +31,7 @@ Edu-Flash is a smart flashcard generator built with Python and Flask that uses N
 git clone https://github.com/Shubham0x1/Edu-Flash.git
 cd Edu-Flash
 
-## 🐍 Create and Activate Virtual Environment
+## 🐍Create and Activate Virtual Environment
 python -m venv venv
 venv\Scripts\activate   # Windows
 # source venv/bin/activate   # macOS/Linux
