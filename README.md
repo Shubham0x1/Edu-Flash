@@ -1,117 +1,95 @@
-# LLM-Powered Flashcard Generator
+# 📚 Edu-Flash: AI-Powered Flashcard Generator
 
-A modern web application that generates interactive flashcards from educational content using Google Gemini AI. The app supports editing, translation, structure detection, and question search—all in a beautiful, user-friendly interface.
+Edu-Flash is a smart flashcard generator built with Python and Flask that uses Natural Language Processing (NLP) and Google's Gemini API to convert PDF files into intelligent flashcards for learning and revision.
 
-## Features
+---
 
-- **AI-Powered Flashcard Generation:**
-  - Uses Google Gemini (via the gemini-1.5-flash model) to generate high-quality flashcards from pasted text or uploaded PDF content.
-- **Difficulty Levels:**
-  - Each flashcard is tagged as Easy, Medium, or Hard.
-- **Edit Before Export:**
-  - Edit any flashcard (question, answer, difficulty, topic) in a smooth modal before exporting.
-- **Multi-language Support:**
-  - Instantly translate all flashcards to multiple languages (Hindi, Spanish, French, etc.) using Google Translate (via backend proxy).
-- **Structure Detection:**
-  - Automatically detects and groups flashcards by chapters, subheadings, or sections in your content.
-- **Question Search:**
-  - Type any question and get an answer from your pasted text or PDF using Gemini (even if the answer is not in a flashcard).
-- **Export Options:**
-  - Export flashcards as JSON, CSV, Anki, or TXT.
-- **Responsive UI:**
-  - Works beautifully on desktop and mobile.
+## 🚀 Features
 
-## Setup
+- 📄 Upload PDF files directly
+- 🧠 Extracts and summarizes key content
+- ✨ Generates flashcards using AI (Google Gemini API)
+- 🔁 Flip cards for interactive review
+- 🌐 Simple UI powered by Flask
+- 🔍 Tokenizes text using NLTK
 
-1. **Clone the repository:**
-   ```bash
-   git clone <your-github-repo-url>
-   cd <repo-directory>
-   ```
+---
 
-2. **Install Python dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🛠️ Tech Stack
 
-3. **Set up your environment:**
-   - Create a `.env` file in the root directory and add your Google Gemini API key:
-     ```
-     GOOGLE_API_KEY=your_google_gemini_api_key_here
-     FLASK_ENV=development
-     ```
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Python 3.11+, Flask
+- **Libraries**: NLTK, PyPDF2, Google Generative AI, python-dotenv
 
-4. **Start the Flask backend:**
-   ```bash
-   python app.py
-   ```
+---
 
-5. **Open the app:**
-   - Visit [http://localhost:5000](http://localhost:5000) in your browser.
+## 🖥️ Installation & Setup
 
-## Usage
+### ✅ Clone the Repository
 
-1. **Paste text or upload a PDF** to generate flashcards.
-2. **Edit** any flashcard before exporting.
-3. **Translate** flashcards to your preferred language.
-4. **Search for answers** to your own questions from the content.
-5. **Export** your flashcards in your desired format.
+```bash
+git clone https://github.com/Shubham0x1/Edu-Flash.git
+cd Edu-Flash
 
-## Sample Execution
+🐍 Create and Activate Virtual Environment
+python -m venv venv
+venv\Scripts\activate   # Windows
+# source venv/bin/activate   # macOS/Linux
+📦 Install Required Packages
+pip install -r requirements.txt
+🔑 Set Up Environment Variables
+Create a .env file in the project root and add your Gemini API key:
+GOOGLE_API_KEY=your_gemini_api_key_here
 
-This section demonstrates a typical workflow using the provided sample PDF: `APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf`.
+🚦 Running the App
+Once setup is complete, run the app using:
+python app.py
+Then open your browser and navigate to:
+http://127.0.0.1:5000
 
-**1. Generating Flashcards from PDF Content:**
+📂 .gitignore
+Create a .gitignore file and add the following to avoid committing unnecessary files:
 
-Upon uploading the PDF and clicking 'Generate Flashcards', the application processes the content and displays a set of flashcards. Due to the structure detection, flashcards are grouped by their respective sections (e.g., 'Introduction', 'Concepts', 'Algorithms').
+markdown
+Copy
+Edit
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+*.log
+*.sqlite3
+*.db
+.idea/
+.vscode/
+node_modules/
+*.pkl
+📦 requirements.txt
+Make sure this file is included to install dependencies. Here's the content:
 
-*Example Flashcard (Front - Question):*
-```
-Card 1 - Binary Search Algorithm
-What is Binary Search?
-Click to reveal answer
-```
+ini
+Copy
+Edit
+Flask==3.1.1
+Flask-Cors==6.0.1
+PyPDF2==3.0.1
+nltk==3.9.1
+google-generativeai==0.8.5
+python-dotenv==1.1.0
+requests==2.32.4
+To generate this automatically:
 
-*Example Flashcard (Back - Answer):*
-```
-Answer - Binary Search Algorithm
-An efficient algorithm for finding an item from a sorted list of elements by repeatedly dividing the search interval in half.
-Click to see question
-```
+bash
+Copy
+Edit
+pip freeze > requirements.txt
+🤝 Contributing
+Pull requests are welcome. For major changes, open an issue first to discuss proposed updates.
 
-**2. Translating Flashcards:**
+📄 License
+This project is licensed under the MIT License.
 
-After generation, you can select a language (e.g., Hindi) from the dropdown and click 'Translate'. The flashcards will be instantly translated.
-
-*Example Translated Flashcard (Hindi):*
-```
-कार्ड 1 - बाइनरी सर्च एल्गोरिथम
-बाइनरी सर्च क्या है?
-उत्तर प्रकट करने के लिए क्लिक करें
-```
-
-**3. Searching for an Answer:**
-
-You can also search for specific answers within the content. For instance, if you type "What is the key requirement for Binary Search?" into the search bar, you would get an answer directly from the content.
-
-*Example Search Result:* 
-```
-Answer
-The input list or array must be sorted.
-```
-
-## Screenshots
-
-*(Add your screenshots here to visually demonstrate the features)* 
-
-### 1. Search for an Answer with Error
-
-![Search for an Answer with Error](Screenshot%202025-06-13%20155408.png)
-
-### 2. Search Result and Flashcard Example
-
-![Search Result and Flashcard Example](Screenshot%202025-06-13%20155343.png)
-
-### 3. Flashcard View
-
-![Flashcard View](Screenshot%202025-06-13%20155238.png) 
+✨ Author
+Made with ❤️ by Shubham Gusain
+Let me know if you'd like a downloadable `.md` file or want to auto-generate this inside your repo using a scr
