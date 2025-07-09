@@ -1,117 +1,140 @@
-# LLM-Powered Flashcard Generator
 
-A modern web application that generates interactive flashcards from educational content using Google Gemini AI. The app supports editing, translation, structure detection, and question search—all in a beautiful, user-friendly interface.
+# 🧠 LLM-Powered Flashcard Generator
 
-## Features
+A modern web application that generates interactive, multilingual flashcards from educational content using **Google Gemini AI**. Built for students, educators, and professionals, the tool offers a sleek interface, AI question-answer generation, content structuring, live search, and multiple export formats.
 
-- **AI-Powered Flashcard Generation:**
-  - Uses Google Gemini (via the gemini-1.5-flash model) to generate high-quality flashcards from pasted text or uploaded PDF content.
-- **Difficulty Levels:**
-  - Each flashcard is tagged as Easy, Medium, or Hard.
-- **Edit Before Export:**
-  - Edit any flashcard (question, answer, difficulty, topic) in a smooth modal before exporting.
-- **Multi-language Support:**
-  - Instantly translate all flashcards to multiple languages (Hindi, Spanish, French, etc.) using Google Translate (via backend proxy).
-- **Structure Detection:**
-  - Automatically detects and groups flashcards by chapters, subheadings, or sections in your content.
-- **Question Search:**
-  - Type any question and get an answer from your pasted text or PDF using Gemini (even if the answer is not in a flashcard).
-- **Export Options:**
-  - Export flashcards as JSON, CSV, Anki, or TXT.
-- **Responsive UI:**
-  - Works beautifully on desktop and mobile.
+---
 
-## Setup
+## 🚀 Features
 
-1. **Clone the repository:**
-   ```bash
-   git clone <your-github-repo-url>
-   cd <repo-directory>
-   ```
+### 🤖 AI-Powered Flashcard Generation
+- Uses **Google Gemini (gemini-1.5-flash)** to generate high-quality flashcards from **pasted text** or **PDF uploads**.
 
-2. **Install Python dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 📊 Difficulty Levels
+- Each flashcard is labeled **Easy**, **Medium**, or **Hard** to help tailor study sessions.
 
-3. **Set up your environment:**
-   - Create a `.env` file in the root directory and add your Google Gemini API key:
-     ```
-     GOOGLE_API_KEY=your_google_gemini_api_key_here
-     FLASK_ENV=development
-     ```
+### ✍️ In-App Flashcard Editing
+- Edit questions, answers, topics, and difficulty levels in a user-friendly **modal editor** before exporting.
 
-4. **Start the Flask backend:**
-   ```bash
-   python app.py
-   ```
+### 🌐 Multi-language Support
+- Translate flashcards into **Hindi, Spanish, French, and more** using **Google Translate API (via backend proxy)**.
 
-5. **Open the app:**
-   - Visit [http://localhost:5000](http://localhost:5000) in your browser.
+### 🧩 Structure Detection
+- Automatically detects **chapters, subheadings, and sections** to group flashcards logically.
 
-## Usage
+### 🔍 Intelligent Question Search
+- Type any question and retrieve accurate answers using Gemini—even if not explicitly in the flashcards.
 
-1. **Paste text or upload a PDF** to generate flashcards.
-2. **Edit** any flashcard before exporting.
-3. **Translate** flashcards to your preferred language.
-4. **Search for answers** to your own questions from the content.
-5. **Export** your flashcards in your desired format.
+### 📤 Multiple Export Options
+- Export your flashcards to **JSON**, **CSV**, **Anki (.apkg)**, or **plain TXT**.
+
+### 📱 Responsive UI
+- Fully responsive interface—**mobile and desktop friendly**.
+
+---
+
+## 🧰 Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-github-repo-url>
+cd <repo-directory>
+```
+### 2. Install Python Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure Environment Variables
+Create a .env file in the root directory and add:
+
+```bash
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+FLASK_ENV=development
+```
+
+### 4. Start the Flask Backend
+
+```bash
+python app.py
+```
+
+### 5. Open the App in Your Browser
+
+```bash
+http://localhost:5000
+```
+
+## 🧪 Usage Guide
+
+- Upload a **PDF** or paste **raw text**.
+- Click **Generate Flashcards** to begin AI processing.
+- Edit individual flashcards as needed.
+- Use the **language dropdown** to translate flashcards.
+- Enter any **custom question** to get answers via Gemini AI.
+- Export your final set in your desired format (JSON, CSV, Anki, TXT).
 
 ## Sample Execution
+This section demonstrates a typical workflow using the provided sample PDF: APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf.
 
-This section demonstrates a typical workflow using the provided sample PDF: `APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf`.
+1. Generating Flashcards from PDF Content:
 
-**1. Generating Flashcards from PDF Content:**
+Upload a document related to Computer Networks and click "Generate Flashcards". The app processes the content using Gemini and creates flashcards grouped by topic (e.g., OSI Model, IP Addressing, Routing Protocols).
 
-Upon uploading the PDF and clicking 'Generate Flashcards', the application processes the content and displays a set of flashcards. Due to the structure detection, flashcards are grouped by their respective sections (e.g., 'Introduction', 'Concepts', 'Algorithms').
+Example Flashcard (Front - Question):
 
-*Example Flashcard (Front - Question):*
-```
-Card 1 - Binary Search Algorithm
-What is Binary Search?
-Click to reveal answer
-```
+Q: What is the purpose of the OSI model?
+A: It standardizes networking functions into seven layers to ensure interoperability between systems.
 
-*Example Flashcard (Back - Answer):*
-```
-Answer - Binary Search Algorithm
-An efficient algorithm for finding an item from a sorted list of elements by repeatedly dividing the search interval in half.
-Click to see question
-```
+2. Translating Flashcards:
 
-**2. Translating Flashcards:**
+Q: What is the difference between TCP and UDP?
+A: TCP is connection-oriented and reliable, while UDP is faster but connectionless and less reliable.
 
-After generation, you can select a language (e.g., Hindi) from the dropdown and click 'Translate'. The flashcards will be instantly translated.
+Example Translated Flashcard (Hindi):
 
-*Example Translated Flashcard (Hindi):*
-```
-कार्ड 1 - बाइनरी सर्च एल्गोरिथम
-बाइनरी सर्च क्या है?
-उत्तर प्रकट करने के लिए क्लिक करें
-```
+Q: OSI मॉडल का उद्देश्य क्या है?
+A: यह नेटवर्किंग कार्यों को सात परतों में विभाजित करता है जिससे विभिन्न प्रणालियों के बीच पारस्परिक क्रियाशीलता सुनिश्चित होती है।
 
-**3. Searching for an Answer:**
+3. Searching for an Answer:
 
-You can also search for specific answers within the content. For instance, if you type "What is the key requirement for Binary Search?" into the search bar, you would get an answer directly from the content.
+You can also search for specific answers within the uploaded content. For instance, if you type "Why is the OSI model important?" into the search bar, you’ll get a direct and accurate answer based on the document's content.
 
-*Example Search Result:* 
-```
+Example Search Result:
+
 Answer
-The input list or array must be sorted.
-```
+The OSI model is important because it standardizes the functions of a telecommunication or computing system into seven distinct layers, enabling interoperability among different systems and protocols.
 
 ## Screenshots
 
-*(Add your screenshots here to visually demonstrate the features)* 
-
 ### 1. Search for an Answer with Error
-
-![Search for an Answer with Error](Screenshot%202025-06-13%20155408.png)
+![Screenshot 2025-07-09 214731.png](https://github.com/Shubham0x1/Edu-Flash/blob/main/Screenshot%202025-07-09%20214731.png)
 
 ### 2. Search Result and Flashcard Example
-
-![Search Result and Flashcard Example](Screenshot%202025-06-13%20155343.png)
+![Screenshot 2025-07-09 215021.png
+](https://github.com/Shubham0x1/Edu-Flash/blob/main/Screenshot%202025-07-09%20215021.png)
 
 ### 3. Flashcard View
+![Screenshot 2025-07-09 215121.png](https://github.com/Shubham0x1/Edu-Flash/blob/main/Screenshot%202025-07-09%20215121.png)
 
-![Flashcard View](Screenshot%202025-06-13%20155238.png) 
+## 🧭 Roadmap / To-Do
+
+- [ ] Flashcard review mode  
+- [ ] Flashcard shuffling  
+- [ ] Dark mode  
+- [ ] Subject-wise export  
+- [ ] Flashcard tagging system
+
+## ✨ Acknowledgments
+
+- [Google Gemini](https://deepmind.google/technologies/gemini/)
+- [Flask](https://flask.palletsprojects.com/)
+- [Google Translate API](https://cloud.google.com/translate)
+
+## 💬 Feedback
+
+- Found a bug or want to suggest a feature?  
+- Feel free to [open an issue](https://github.com/Shubham0x1/Edu-Flash/issues) or submit a pull request.  
+Contributions are welcome and appreciated!
