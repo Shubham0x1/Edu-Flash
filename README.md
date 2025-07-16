@@ -38,7 +38,7 @@ A modern web application that generates interactive, multilingual flashcards fro
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-github-repo-url>
+git clone <https://github.com/Shubham0x1/Edu-Flash>
 cd <repo-directory>
 ```
 ### 2. Install Python Dependencies
