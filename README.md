@@ -5,6 +5,7 @@ A modern web application that generates interactive, multilingual flashcards fro
 
 ---
 
+## Run Locally - http://127.0.0.1:5000/
 ## 🚀 Features
 
 ### 🤖 AI-Powered Flashcard Generation
