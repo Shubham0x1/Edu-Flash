@@ -78,7 +78,7 @@ http://localhost:5000
 - Export your final set in your desired format (JSON, CSV, Anki, TXT).
 
 ## Sample Execution
-This section demonstrates a typical workflow using the provided sample PDF: APznzaZUdlapAFWUKFjr-5SnuYRG6kF2yZKssJDVbSPfPu3DM0l4x72p_yOKHEvc_TN7aMtuLit-RwulHzqllkfWqbdvNB-VxVVmEbEEkLv9orKDSKz_voCV6lmoy1mxCY-BXkTHXsBdVlxssw9uYgF1Mj5nu7vDh3S67AAXU3zSMpQQRtp8FkK07u1bY-0B9GUyPwsmaEYLt.pdf.
+This section demonstrates a typical workflow using the provided sample PDF:
 
 1. Generating Flashcards from PDF Content:
 
